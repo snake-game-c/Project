@@ -4,7 +4,7 @@
 
 #include "function.h"
 
-SnakeCell *AddRectangle(Snake *snake)
+Snake *AddRectangle(Snake *snake)
 {
 	/*Initialisation de la nouvelle cellule*/
 
@@ -52,6 +52,72 @@ SnakeCell *AddRectangle(Snake *snake)
 	current->next=newrect;
 
 	/*------------------------------------*/
-
+	
+	snake->length++;
 	return snake;
 }
+
+Snake *MoveSnake(Snake *snake,int dir)
+{	
+	SnakeCell* current=snake->head;
+	//mise a jour de la tete
+	if (dir==NORTH){
+		current->rectangle->x-=COTE;
+		current->direction=dir;
+	}
+	else if (dir==EAST){
+		current->rectangle->y+=COTE;
+		current->direction=dir;
+	}
+	else if (dir==WEST){
+		current->rectangle->y-=COTE;
+		current->direction=dir;
+	}
+	else if (dir==SOUTH){
+		current->rectangle->x+=COTE;
+		current->direction=dir;
+	}
+	SnakeCell *previous=current;
+	current=current->next;
+	int dirtempprev=previous->direction;
+	int dirtempnext;
+	// modification de la position du rectangle actuel selon sa direction
+	// et modification de sa direction par la direction du rectangle precedent
+	while (current!=NULL){
+			dirtempnext=current->direction;
+		if (current->direction==NORTH){
+			current->rectangle->x-=COTE;
+			current->direction=dirtempprev;
+		}
+		else if (current->direction==EAST){
+			current->rectangle->y+=COTE;
+			current->direction=dirtempprev;
+		}
+		else if (current->direction==WEST){
+			current->rectangle->y-=COTE;
+			current->direction=dirtempprev;
+		}
+		else if (current->direction==SOUTH){
+			current->rectangle->x+=COTE;
+			current->direction=dirtempprev;
+		}
+		dirtempprev=dirtempnext;
+		current=current->next;
+	}
+	return snake;
+}
+
+void PrintSnakeConsole(Snake *snake)
+{
+	SnakeCell* current=snake->head;
+	int Case=0;
+	while(current!=NULL){
+		printf("Case %d : \n",Case);
+		Case++;
+		printf("\tCoordonnees du point d origine (%d,%d)\n",current->rectangle->x,current->rectangle->y);
+		printf("\tDirection %d\n",current->direction);
+		current=current->next;
+	}
+}
+
+

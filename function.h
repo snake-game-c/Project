@@ -15,7 +15,7 @@
 /*Une cellule du Snake(contient un rectangle)*/
 typedef struct SnakeCell{
 	SDL_Rect *rectangle;  //chaque cellule contient un rectangle
-	SDL_Rect *next; //un pointeur vers la prochaine cellule
+	struct SnakeCell *next; //un pointeur vers la prochaine cellule
 	int direction;  //la direction courante du rectangle
 }SnakeCell;
 
@@ -25,8 +25,11 @@ typedef struct Snake{
 	int length; //la longueur du Snake
 }Snake;
 
-SnakeCell *AddRectangle(SnakeCell *snake);
-void PrintSnake(SnakeCell *snake, SDL_Window *window, SDL_Window *window, SDL_Renderer *renderer);
+Snake *AddRectangle(Snake *snake);
+//void PrintSnake(Snake *snake, SDL_Window *window,  SDL_Renderer *renderer);
 
+Snake *MoveSnake(Snake *snake,int dir);
+
+void PrintSnakeConsole(Snake *snake);
 
 #endif
