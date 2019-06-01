@@ -59,7 +59,7 @@ Snake *AddRectangle(Snake *snake)
 
 Snake *MoveSnake(Snake *snake,int dir)
 {	
-	SnakeCell* current=snake->head;
+	SnakeCell *current=snake->head;
 	//mise a jour de la tete
 	if (dir==NORTH){
 		current->rectangle->x-=COTE;
@@ -109,7 +109,7 @@ Snake *MoveSnake(Snake *snake,int dir)
 
 void PrintSnakeConsole(Snake *snake)
 {
-	SnakeCell* current=snake->head;
+	SnakeCell *current=snake->head;
 	int Case=0;
 	while(current!=NULL){
 		printf("Case %d : \n",Case);
@@ -120,4 +120,22 @@ void PrintSnakeConsole(Snake *snake)
 	}
 }
 
+Snake *InitialiseSnake(int x1, int y1, int dir)
+{
+	SnakeCell *tete=malloc(sizeof(SnakeCell));
+	SDL_Rect *rec=malloc(sizeof(SDL_Rect));
+	tete ->rectangle=rec;
+	tete->rectangle->x=x1;
+	tete->rectangle->y=y1;
+	tete->rectangle->w=COTE;
+	tete->rectangle->h=COTE;
 
+	tete->direction=dir;
+	tete->next=NULL;
+
+	Snake *snake=malloc(sizeof(Snake));
+	snake->head=tete;
+	snake->length=1;
+
+	return snake;
+}

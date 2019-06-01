@@ -6,6 +6,7 @@
 
 
 // linux gcc main.c function.c $(sdl2-config --cflags --libs) -o snake
+// Windows gcc -Wall src/Project/main.c src/Project/function.c -o bin/Snake -I include -L lib -lmingw32 -lSDL2main -lSDL2
 
 void ExitWithError(char *message)
 {
@@ -47,19 +48,18 @@ int main(int argc, char *argv[])
 {	
 	/*--------Initialisation de la fenêtre et du rendu--------*/
 
-	//SDL_Window *fenetre=NULL;
-	//SDL_Renderer *rendu=NULL; 
+	SDL_Window *fenetre=NULL;
+	SDL_Renderer *rendu=NULL; 
 
-	//Initialise(fenetre,rendu);
+	Initialise(fenetre,rendu);
 	
-	SnakeCell* tete=malloc(sizeof(SnakeCell));
-	tete->rectangle->x=100;
-	tete->rectangle->y=100;
-	tete->direction =EAST;
-	tete->next=NULL;
-	Snake* snake=malloc(sizeof(Snake));
-	snake->head=tete;
-	snake->length=0;
+
+	/*Initialisation du Snake*/
+	Snake *snake=InitialiseSnake(100,100,EAST);
+	printf("(x,y)=(%d,%d)\n",snake->head->rectangle->x,snake->head->rectangle->y);
+	/*----------------------*/
+
+	/*Test des fonctions*/
 	PrintSnakeConsole(snake);
 	printf("Add Case \n");
 	snake=AddRectangle(snake);
@@ -74,11 +74,18 @@ int main(int argc, char *argv[])
 	printf("Move WEST\n");
 	snake=MoveSnake(snake,WEST);
 	PrintSnakeConsole(snake);
+	/*----------------------*/
+
 
 	/*Execution du programme*/
-	//SDL_Delay(3000);
-	//SDL_DestroyWindow(fenetre);
-	//SDL_DestroyRenderer(rendu);
-	//SDL_Quit();
+
+	/*----------------------*/
+
+
+	/*Fermeture de la SDL*/
+	SDL_Delay(3000);
+	SDL_DestroyWindow(fenetre);
+	SDL_DestroyRenderer(rendu);
+	SDL_Quit();
 	return 0;
 }

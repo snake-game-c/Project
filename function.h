@@ -27,9 +27,9 @@ typedef struct Snake{
 
 Snake *AddRectangle(Snake *snake);
 //void PrintSnake(Snake *snake, SDL_Window *window,  SDL_Renderer *renderer);
-
 Snake *MoveSnake(Snake *snake,int dir);
-
 void PrintSnakeConsole(Snake *snake);
+Snake *InitialiseSnake(int x1, int y1, int dir);
+
 
 #endif
