@@ -77,13 +77,61 @@ int main(int argc, char *argv[])
 	/*----------------------*/
 
 
-	/*Execution du programme*/
+	/*Gestion des evenements*/
+
+	SDL_bool program_launched=SDL_TRUE;
+
+	while(program_launched){
+		SDL_Event event;
+
+		while(SDL_PollEvent(&event)){
+			switch(event.type){    //En fonction de l'evenement 
+
+				case SDL_QUIT:    //Croix de la fenetre
+					program_launched=SDL_FALSE;
+					break;
+
+				case SDL_KEYDOWN:  //Une touche est pressee
+					switch(event.key.keysym.sym){  //En fonction de la touche pressee
+
+						case SDLK_LEFT: 
+							/*Action a faire si la touche gauche est pressee*/
+							printf("LEFT\n");
+							MoveSnake(snake,EAST);
+							break;
+
+						case SDLK_RIGHT: 
+							/*Action a faire si la touche droite est pressee*/
+							printf("RIGHT\n");
+							MoveSnake(snake,WEST);
+							break;
+
+						case SDLK_UP:
+							/*Action a faire si la touche haute est pressee*/ 
+							printf("UP\n");
+							MoveSnake(snake,NORTH);
+							break;
+					
+						case SDLK_DOWN: 
+							/*Action a faire si la touche basse est pressee*/
+							printf("DOWN\n");
+							MoveSnake(snake,SOUTH);
+							break;
+					}
+					break;
+
+				default:
+					break;
+			}
+
+		}
+	}
+
 
 	/*----------------------*/
 
 
 	/*Fermeture de la SDL*/
-	SDL_Delay(3000);
 	SDL_DestroyWindow(fenetre);
 	SDL_DestroyRenderer(rendu);
 	SDL_Quit();

@@ -34,16 +34,16 @@ Snake *AddRectangle(Snake *snake)
 	/*On adapte le point de rec suivant la direction de la dernière cellule*/
 
 	if (current->direction==NORTH){
-	    rec->x+=COTE;
+	    rec->y+=COTE;
 	}
 	else if (current->direction==EAST){
-		rec->y-=COTE;
+		rec->x-=COTE;
 	}
 	else if (current->direction==WEST){
-		rec->y+=COTE;
+		rec->x+=COTE;
 	}
 	else if (current->direction==SOUTH){
-		rec->x-=COTE;
+		rec->y-=COTE;
 	}
 
 	//On oublie pas de donner la même direction au rectangle qu'on vient d'ajouter
@@ -62,19 +62,19 @@ Snake *MoveSnake(Snake *snake,int dir)
 	SnakeCell *current=snake->head;
 	//mise a jour de la tete
 	if (dir==NORTH){
-		current->rectangle->x-=COTE;
-		current->direction=dir;
-	}
-	else if (dir==EAST){
-		current->rectangle->y+=COTE;
-		current->direction=dir;
-	}
-	else if (dir==WEST){
 		current->rectangle->y-=COTE;
 		current->direction=dir;
 	}
-	else if (dir==SOUTH){
+	else if (dir==EAST){
 		current->rectangle->x+=COTE;
+		current->direction=dir;
+	}
+	else if (dir==WEST){
+		current->rectangle->x-=COTE;
+		current->direction=dir;
+	}
+	else if (dir==SOUTH){
+		current->rectangle->y+=COTE;
 		current->direction=dir;
 	}
 	SnakeCell *previous=current;
@@ -86,19 +86,19 @@ Snake *MoveSnake(Snake *snake,int dir)
 	while (current!=NULL){
 			dirtempnext=current->direction;
 		if (current->direction==NORTH){
-			current->rectangle->x-=COTE;
-			current->direction=dirtempprev;
-		}
-		else if (current->direction==EAST){
-			current->rectangle->y+=COTE;
-			current->direction=dirtempprev;
-		}
-		else if (current->direction==WEST){
 			current->rectangle->y-=COTE;
 			current->direction=dirtempprev;
 		}
-		else if (current->direction==SOUTH){
+		else if (current->direction==EAST){
 			current->rectangle->x+=COTE;
+			current->direction=dirtempprev;
+		}
+		else if (current->direction==WEST){
+			current->rectangle->x-=COTE;
+			current->direction=dirtempprev;
+		}
+		else if (current->direction==SOUTH){
+			current->rectangle->y+=COTE;
 			current->direction=dirtempprev;
 		}
 		dirtempprev=dirtempnext;

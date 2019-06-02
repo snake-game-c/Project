@@ -9,6 +9,7 @@
 
 #define COTE 15 //taille des carrés composant le snake en pixel
 
+/*-------------Definitions des structures-------------*/
 
 //Le Snake est réprésenté comme une liste chainée
 
@@ -25,11 +26,20 @@ typedef struct Snake{
 	int length; //la longueur du Snake
 }Snake;
 
+/*----------------------------------------------------*/
+
+
+
+
+/*---------------Prototypes des fonctions---------------*/
+
 Snake *AddRectangle(Snake *snake);
 //void PrintSnake(Snake *snake, SDL_Window *window,  SDL_Renderer *renderer);
 Snake *MoveSnake(Snake *snake,int dir);
 void PrintSnakeConsole(Snake *snake);
 Snake *InitialiseSnake(int x1, int y1, int dir);
+
+/*----------------------------------------------------*/
 
 
 #endif
