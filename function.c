@@ -1,6 +1,7 @@
 #include <SDL.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 #include "function.h"
 
@@ -139,3 +140,76 @@ Snake *InitialiseSnake(int x1, int y1, int dir)
 
 	return snake;
 }
+
+void PrintSnake(Snake *snake, SDL_Renderer *renderer){
+
+	 SnakeCell *current=snake->head;
+
+	 while(current!=NULL){
+	 	SDL_RenderFillRect(renderer,current->rectangle);
+	 	current=current->next;
+	 }
+
+	 SDL_RenderPresent(renderer);
+}
+
+SDL_bool EndGame(Snake *snake){    //Indique si le jeu est fini ou non
+
+	int x_current;
+	int y_current;
+
+	int x_head=snake->head->rectangle->x;
+	int y_head=snake->head->rectangle->y;
+
+	/* Si le snake depasse les dimensions de la fenetre*/
+	if (x_head<=0 || x_head>=WIDTH ||y_head<=0 || y_head>=HEIGHT){
+		return SDL_TRUE;
+	}
+	else{
+		SnakeCell *current=snake->head;
+
+		while(current!=NULL){
+			x_current=current->rectangle->x;
+			y_current=current->rectangle->y;
+			if ((x_head<=x_current+COTE || x_head>=x_current)&&(y_head<=y_current+COTE || y_head>=y_current)){
+				return SDL_TRUE;
+			}
+			current=current->next;
+		}
+	}
+	return SDL_FALSE;
+
+}
+
+SDL_bool IsInsideSnake(int x1, int y1, Snake *snake){
+	SnakeCell *current=snake->head;
+	int x_current;
+	int y_current;
+		while(current!=NULL){
+			x_current=current->rectangle->x;
+			y_current=current->rectangle->y;
+			if ((x1<=x_current+COTE || x1>=x_current)&&(y1<=y_current+COTE || y1>=y_current)){
+				return SDL_TRUE;
+			}
+			current=current->next;
+		}
+	return SDL_FALSE;
+
+}
+
+void Pop_Bonus(Snake *snake, SDL_Renderer *renderer,int *x_bonus,int *y_bonus){
+	 *x_bonus=(rand()%(WIDTH/COTE-1))*COTE;
+	 *y_bonus=(rand()%(HEIGHT/COTE-1))*COTE;
+
+	 while(IsInsideSnake(*x_bonus,*y_bonus,snake)){
+	 		*x_bonus=(rand()%(WIDTH/COTE-1))*COTE;
+	 		*y_bonus=(rand()%(HEIGHT/COTE-1))*COTE;
+	 }
+
+}
+
+
+
+/*void Game(void){
+	InitialiseSnake()
+}*/

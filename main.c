@@ -1,6 +1,7 @@
 #include <SDL.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 #include "function.h"
 
@@ -15,8 +16,15 @@ void ExitWithError(char *message)
 	exit(EXIT_FAILURE);
 }
 
-void Initialise(SDL_Window *fenetre, SDL_Renderer *rendu)
-{
+int main(int argc, char *argv[])
+{	
+	/*--------Initialisation de la fenêtre et du rendu--------*/
+
+	SDL_Window *fenetre=NULL;
+	SDL_Renderer *rendu=NULL; 
+	srand(time(NULL));
+
+	
 	/*-----------Initilisation de la SDL-----------*/
 
 	if (SDL_Init(SDL_INIT_EVERYTHING)!=0){
@@ -25,7 +33,7 @@ void Initialise(SDL_Window *fenetre, SDL_Renderer *rendu)
 
 	/*-----------FENETRE-----------*/
 
-	fenetre=SDL_CreateWindow("Jeu du Snake", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,900,700,0);
+	fenetre=SDL_CreateWindow("Jeu du Snake", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,HEIGHT,WIDTH,0);
 
 	if(fenetre==NULL){
 		ExitWithError("Impossible de créer une fenetre");
@@ -40,18 +48,6 @@ void Initialise(SDL_Window *fenetre, SDL_Renderer *rendu)
 		ExitWithError("Impossible de créer un rendu");
 
 	}
-
-}
-
-
-int main(int argc, char *argv[])
-{	
-	/*--------Initialisation de la fenêtre et du rendu--------*/
-
-	SDL_Window *fenetre=NULL;
-	SDL_Renderer *rendu=NULL; 
-
-	Initialise(fenetre,rendu);
 	
 
 	/*Initialisation du Snake*/
@@ -76,6 +72,12 @@ int main(int argc, char *argv[])
 	PrintSnakeConsole(snake);
 	/*----------------------*/
 
+	if (SDL_SetRenderDrawColor(rendu,255,255,255,255)!=0){
+		SDL_Log("Erreur changement de couleur: %s\n",SDL_GetError());
+	}
+
+
+	PrintSnake(snake,rendu);
 
 	/*Gestion des evenements*/
 
@@ -116,6 +118,13 @@ int main(int argc, char *argv[])
 							/*Action a faire si la touche basse est pressee*/
 							printf("DOWN\n");
 							MoveSnake(snake,SOUTH);
+							break;
+
+						case SDLK_ESCAPE:
+							program_launched=SDL_FALSE;
+							break;
+
+						default:
 							break;
 					}
 					break;

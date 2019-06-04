@@ -8,6 +8,8 @@
 #define WEST 3
 
 #define COTE 15 //taille des carrés composant le snake en pixel
+#define HEIGHT 900
+#define WIDTH 900
 
 /*-------------Definitions des structures-------------*/
 
@@ -34,11 +36,13 @@ typedef struct Snake{
 /*---------------Prototypes des fonctions---------------*/
 
 Snake *AddRectangle(Snake *snake);
-//void PrintSnake(Snake *snake, SDL_Window *window,  SDL_Renderer *renderer);
+void PrintSnake(Snake *snake, SDL_Renderer *renderer);
 Snake *MoveSnake(Snake *snake,int dir);
 void PrintSnakeConsole(Snake *snake);
 Snake *InitialiseSnake(int x1, int y1, int dir);
-
+SDL_bool EndGame(Snake *snake);
+SDL_bool IsInsideSnake(int x1, int y1, Snake *Snake);
+void Pop_Bonus(Snake *snake, SDL_Renderer *renderer,int *x_bonus,int *y_bonus);
 /*----------------------------------------------------*/
 
 
