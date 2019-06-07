@@ -18,6 +18,7 @@ void ExitWithError(char *message)
 
 int main(int argc, char *argv[])
 {	
+	srand(time(NULL));
 	/*--------Initialisation de la fenêtre et du rendu--------*/
 
 	SDL_Window *fenetre=NULL;
@@ -48,36 +49,24 @@ int main(int argc, char *argv[])
 		ExitWithError("Impossible de créer un rendu");
 
 	}
+
+	SDL_SetRenderDrawColor(rendu,255,255,255,255);
 	
 
 	/*Initialisation du Snake*/
 	Snake *snake=InitialiseSnake(100,100,EAST);
-	printf("(x,y)=(%d,%d)\n",snake->head->rectangle->x,snake->head->rectangle->y);
 	/*----------------------*/
 
-	/*Test des fonctions*/
-	PrintSnakeConsole(snake);
-	printf("Add Case \n");
-	snake=AddRectangle(snake);
-	PrintSnakeConsole(snake);
-	printf("Move SOUTH\n");
-	snake=MoveSnake(snake,SOUTH);
-	PrintSnakeConsole(snake);
-	printf("Add 2 Cases \n");
-	snake=AddRectangle(snake);
-	snake=AddRectangle(snake);
-	PrintSnakeConsole(snake);
-	printf("Move WEST\n");
-	snake=MoveSnake(snake,WEST);
-	PrintSnakeConsole(snake);
+	/*Definition des variables de jeu*/
+	int x_bonus;
+	int y_bonus;
+
+	printf("1\n");
+	Pop_Bonus(snake,rendu,&x_bonus,&y_bonus); 	//Fait apparaitre un bonus sur l'ecran
+	printf("2\n");
+	PrintSnake(snake,rendu); //Affiche le snake
+	printf("3\n");
 	/*----------------------*/
-
-	if (SDL_SetRenderDrawColor(rendu,255,255,255,255)!=0){
-		SDL_Log("Erreur changement de couleur: %s\n",SDL_GetError());
-	}
-
-
-	PrintSnake(snake,rendu);
 
 	/*Gestion des evenements*/
 
@@ -86,53 +75,69 @@ int main(int argc, char *argv[])
 	while(program_launched){
 		SDL_Event event;
 
-		while(SDL_PollEvent(&event)){
-			switch(event.type){    //En fonction de l'evenement 
+		if(EndGame(snake)==SDL_FALSE){
+			printf("TEST ENDGAME\n");
+			while(SDL_PollEvent(&event)){
+				switch(event.type){    //En fonction de l'evenement 
 
-				case SDL_QUIT:    //Croix de la fenetre
-					program_launched=SDL_FALSE;
-					break;
+					case SDL_QUIT:
+						program_launched=SDL_FALSE;
+						break;
 
-				case SDL_KEYDOWN:  //Une touche est pressee
-					switch(event.key.keysym.sym){  //En fonction de la touche pressee
+					case SDL_KEYDOWN:  //Une touche est pressee
+						switch(event.key.keysym.sym){  //En fonction de la touche pressee
 
-						case SDLK_LEFT: 
+							case SDLK_LEFT: 
 							/*Action a faire si la touche gauche est pressee*/
-							printf("LEFT\n");
-							MoveSnake(snake,EAST);
-							break;
+								printf("LEFT\n");
+								SDL_RenderClear(rendu);
+								MoveSnake(snake,EAST,rendu);
+								break;
 
-						case SDLK_RIGHT: 
+							case SDLK_RIGHT: 
 							/*Action a faire si la touche droite est pressee*/
-							printf("RIGHT\n");
-							MoveSnake(snake,WEST);
-							break;
+								printf("RIGHT\n");
+								SDL_RenderClear(rendu);
+								MoveSnake(snake,WEST,rendu);
+								break;
 
-						case SDLK_UP:
+							case SDLK_UP:
 							/*Action a faire si la touche haute est pressee*/ 
-							printf("UP\n");
-							MoveSnake(snake,NORTH);
-							break;
+								printf("UP\n");
+								SDL_RenderClear(rendu);
+								MoveSnake(snake,NORTH,rendu);
+								break;
 					
-						case SDLK_DOWN: 
+							case SDLK_DOWN: 
 							/*Action a faire si la touche basse est pressee*/
-							printf("DOWN\n");
-							MoveSnake(snake,SOUTH);
-							break;
+								printf("DOWN\n");
+								SDL_RenderClear(rendu);
+								MoveSnake(snake,SOUTH,rendu);
+								break;
 
-						case SDLK_ESCAPE:
-							program_launched=SDL_FALSE;
-							break;
+							case SDLK_ESCAPE:
+								program_launched=SDL_FALSE;
+								break;
 
-						default:
-							break;
-					}
-					break;
+							default:
+								SDL_RenderClear(rendu);
+								MoveSnake(snake,snake->head->direction,rendu);
+								break;
+						}
+						break;
 
-				default:
-					break;
+					default:
+						break;
+				
+				}
+		}
+		if (IsInsideSnake(x_bonus,y_bonus,snake)){
+			AddRectangle(snake);
+			SDL_RenderClear(rendu);
+			Pop_Bonus(snake,rendu,&x_bonus,&y_bonus);
+			PrintSnake(snake,rendu);
 			}
-
+		
 		}
 	}
 

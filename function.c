@@ -58,24 +58,24 @@ Snake *AddRectangle(Snake *snake)
 	return snake;
 }
 
-Snake *MoveSnake(Snake *snake,int dir)
+Snake *MoveSnake(Snake *snake,int dir,SDL_Renderer *renderer)
 {	
 	SnakeCell *current=snake->head;
 	//mise a jour de la tete
 	if (dir==NORTH){
-		current->rectangle->y-=COTE;
+		MoveSnake30FPS(snake,current->rectangle,NORTH,renderer);
 		current->direction=dir;
 	}
 	else if (dir==EAST){
-		current->rectangle->x+=COTE;
+		MoveSnake30FPS(snake,current->rectangle,EAST,renderer);
 		current->direction=dir;
 	}
 	else if (dir==WEST){
-		current->rectangle->x-=COTE;
+		MoveSnake30FPS(snake,current->rectangle,WEST,renderer);
 		current->direction=dir;
 	}
 	else if (dir==SOUTH){
-		current->rectangle->y+=COTE;
+		MoveSnake30FPS(snake,current->rectangle,SOUTH,renderer);
 		current->direction=dir;
 	}
 	SnakeCell *previous=current;
@@ -87,19 +87,19 @@ Snake *MoveSnake(Snake *snake,int dir)
 	while (current!=NULL){
 			dirtempnext=current->direction;
 		if (current->direction==NORTH){
-			current->rectangle->y-=COTE;
+			MoveSnake30FPS(snake,current->rectangle,NORTH,renderer);
 			current->direction=dirtempprev;
 		}
 		else if (current->direction==EAST){
-			current->rectangle->x+=COTE;
+			MoveSnake30FPS(snake,current->rectangle,EAST,renderer);
 			current->direction=dirtempprev;
 		}
 		else if (current->direction==WEST){
-			current->rectangle->x-=COTE;
+			MoveSnake30FPS(snake,current->rectangle,WEST,renderer);
 			current->direction=dirtempprev;
 		}
 		else if (current->direction==SOUTH){
-			current->rectangle->y+=COTE;
+			MoveSnake30FPS(snake,current->rectangle,SOUTH,renderer);
 			current->direction=dirtempprev;
 		}
 		dirtempprev=dirtempnext;
@@ -162,16 +162,17 @@ SDL_bool EndGame(Snake *snake){    //Indique si le jeu est fini ou non
 	int y_head=snake->head->rectangle->y;
 
 	/* Si le snake depasse les dimensions de la fenetre*/
-	if (x_head<=0 || x_head>=WIDTH ||y_head<=0 || y_head>=HEIGHT){
+	if (x_head<0 || x_head>WIDTH ||y_head<0 || y_head>HEIGHT){
 		return SDL_TRUE;
 	}
 	else{
-		SnakeCell *current=snake->head;
+		SnakeCell *current=snake->head->next;
+		printf("%p\n",current);
 
 		while(current!=NULL){
 			x_current=current->rectangle->x;
 			y_current=current->rectangle->y;
-			if ((x_head<=x_current+COTE || x_head>=x_current)&&(y_head<=y_current+COTE || y_head>=y_current)){
+			if ((x_head<=x_current+COTE && x_head>=x_current)&&(y_head<=y_current+COTE && y_head>=y_current)){
 				return SDL_TRUE;
 			}
 			current=current->next;
@@ -188,7 +189,7 @@ SDL_bool IsInsideSnake(int x1, int y1, Snake *snake){
 		while(current!=NULL){
 			x_current=current->rectangle->x;
 			y_current=current->rectangle->y;
-			if ((x1<=x_current+COTE || x1>=x_current)&&(y1<=y_current+COTE || y1>=y_current)){
+			if ((x1<=x_current+COTE && x1>=x_current)&&(y1<=y_current+COTE && y1>=y_current)){
 				return SDL_TRUE;
 			}
 			current=current->next;
@@ -201,15 +202,144 @@ void Pop_Bonus(Snake *snake, SDL_Renderer *renderer,int *x_bonus,int *y_bonus){
 	 *x_bonus=(rand()%(WIDTH/COTE-1))*COTE;
 	 *y_bonus=(rand()%(HEIGHT/COTE-1))*COTE;
 
+	 printf("x %d\n",*x_bonus);
+	 printf("y %d\n",*y_bonus);
+
 	 while(IsInsideSnake(*x_bonus,*y_bonus,snake)){
 	 		*x_bonus=(rand()%(WIDTH/COTE-1))*COTE;
 	 		*y_bonus=(rand()%(HEIGHT/COTE-1))*COTE;
+	 		printf("x in while %d\n",*x_bonus);
+	 		printf("y in while %d\n",*y_bonus);
 	 }
+
+	 SDL_Rect bonus;
+	 bonus.x=*x_bonus;
+	 bonus.y=*y_bonus;
+	 printf("x after while%d\n",*x_bonus);
+	 printf("y after while%d\n",*y_bonus);
+	 bonus.w=COTE;
+	 bonus.h=COTE;
+	 SDL_RenderFillRect(renderer,&bonus);
 
 }
 
+void MoveSnake30FPS(Snake *snake,SDL_Rect *rectangle, int dir,SDL_Renderer *renderer){
+	int i;
+	int current_time;
+	int previous_time=0;
+
+	if (dir==NORTH){
+		i=rectangle->y;
+		while(rectangle->y>i-COTE){
+			rectangle->y--;
+			current_time=SDL_GetTicks();
+			if (current_time-previous_time>30){
+				PrintSnake(snake,renderer);
+				previous_time=current_time;
+			}else{
+				SDL_Delay(30-(current_time-previous_time));
+			}
+		}
+	}
+	if (dir==EAST){
+		i=rectangle->x;
+		while(rectangle->x<i-COTE){
+			rectangle->x++;
+			current_time=SDL_GetTicks();
+			if (current_time-previous_time>30){
+				PrintSnake(snake,renderer);
+				previous_time=current_time;
+			}else{
+				SDL_Delay(30-(current_time-previous_time));
+			}
+		}
+	}
+	if (dir==WEST){
+		i=rectangle->x;
+		while(rectangle->x>i-COTE){
+			rectangle->x--;
+			current_time=SDL_GetTicks();
+			if (current_time-previous_time>30){
+				PrintSnake(snake,renderer);
+				previous_time=current_time;
+			}else{
+				SDL_Delay(30-(current_time-previous_time));
+			}
+		}
+	}
+	if (dir==SOUTH){
+		i=rectangle->y;
+		while(rectangle->y>i+COTE){
+			rectangle->y++;
+			current_time=SDL_GetTicks();
+			if (current_time-previous_time>30){
+				PrintSnake(snake,renderer);
+				previous_time=current_time;
+			}else{
+				SDL_Delay(30-(current_time-previous_time));
+			}
+		}
+	}
+}
 
 
-/*void Game(void){
-	InitialiseSnake()
-}*/
+//void Game(Snake *snake, SDL_Renderer *renderer,int *x_bonus, int *y_bonus){
+//	Pop_Bonus(snake,renderer,x_bonus,y_bonus); 	//Fait apparaitre un bonus sur l'ecran
+//	PrintSnake(snake,renderer); //Affiche le snake
+//
+//	while(EndGame(snake)==SDL_FALSE){
+//		SDL_Event event;
+//		while(SDL_PollEvent(&event)){
+//			switch(event.type){    //En fonction de l'evenement 
+//
+//				case SDL_KEYDOWN:  //Une touche est pressee
+//					switch(event.key.keysym.sym){  //En fonction de la touche pressee
+//
+//						case SDLK_LEFT: 
+//							/*Action a faire si la touche gauche est pressee*/
+//							printf("LEFT\n");
+//							SDL_RenderClear(renderer);
+//							MoveSnake(snake,EAST,renderer);
+//							break;
+//
+//						case SDLK_RIGHT: 
+//							/*Action a faire si la touche droite est pressee*/
+//							printf("RIGHT\n");
+///							SDL_RenderClear(renderer);
+	//						MoveSnake(snake,WEST,renderer);
+//							break;
+//
+//						case SDLK_UP:
+//							/*Action a faire si la touche haute est pressee*/ 
+///							printf("UP\n");
+	//						SDL_RenderClear(renderer);
+	//						MoveSnake(snake,NORTH,renderer);
+//							break;
+//					
+//						case SDLK_DOWN: 
+//							/*Action a faire si la touche basse est pressee*/
+//							printf("DOWN\n");
+//							SDL_RenderClear(renderer);
+//							MoveSnake(snake,SOUTH,renderer);
+//							break;
+//
+//						default:
+//							SDL_RenderClear(renderer);
+//							MoveSnake(snake,snake->head->direction,renderer);
+//							break;
+//					}
+//					break;
+//
+//				default:
+//					break;
+//			}
+//		}
+//
+//		if (IsInsideSnake(*x_bonus,*y_bonus,snake)){
+//			AddRectangle(snake);
+//			SDL_RenderClear(renderer);
+//			Pop_Bonus(snake,renderer,x_bonus,y_bonus);
+//			PrintSnake(snake,renderer);
+//		}
+//	}
+//}*/
