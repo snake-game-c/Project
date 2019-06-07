@@ -76,7 +76,6 @@ int main(int argc, char *argv[])
 		SDL_Event event;
 
 		if(EndGame(snake)==SDL_FALSE){
-			printf("TEST ENDGAME\n");
 			while(SDL_PollEvent(&event)){
 				switch(event.type){    //En fonction de l'evenement 
 
@@ -91,20 +90,23 @@ int main(int argc, char *argv[])
 							/*Action a faire si la touche gauche est pressee*/
 								printf("LEFT\n");
 								SDL_RenderClear(rendu);
-								MoveSnake(snake,EAST,rendu);
+								PrintSquare(rendu, x_bonus, y_bonus);
+								MoveSnake(snake,WEST,rendu);
 								break;
 
 							case SDLK_RIGHT: 
 							/*Action a faire si la touche droite est pressee*/
 								printf("RIGHT\n");
 								SDL_RenderClear(rendu);
-								MoveSnake(snake,WEST,rendu);
+								PrintSquare(rendu, x_bonus, y_bonus);
+								MoveSnake(snake,EAST,rendu);
 								break;
 
 							case SDLK_UP:
 							/*Action a faire si la touche haute est pressee*/ 
 								printf("UP\n");
 								SDL_RenderClear(rendu);
+								PrintSquare(rendu, x_bonus, y_bonus);
 								MoveSnake(snake,NORTH,rendu);
 								break;
 					
@@ -112,6 +114,7 @@ int main(int argc, char *argv[])
 							/*Action a faire si la touche basse est pressee*/
 								printf("DOWN\n");
 								SDL_RenderClear(rendu);
+								PrintSquare(rendu, x_bonus, y_bonus);
 								MoveSnake(snake,SOUTH,rendu);
 								break;
 
@@ -120,13 +123,14 @@ int main(int argc, char *argv[])
 								break;
 
 							default:
-								SDL_RenderClear(rendu);
-								MoveSnake(snake,snake->head->direction,rendu);
 								break;
 						}
 						break;
 
 					default:
+						SDL_RenderClear(rendu);
+						PrintSquare(rendu,x_bonus,y_bonus);
+						MoveSnake(snake,snake->head->direction,rendu);
 						break;
 				
 				}

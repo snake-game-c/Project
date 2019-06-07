@@ -143,12 +143,16 @@ Snake *InitialiseSnake(int x1, int y1, int dir)
 
 void PrintSnake(Snake *snake, SDL_Renderer *renderer){
 
+	SDL_SetRenderDrawColor(renderer,255,255,255,255); //blanc
+
 	 SnakeCell *current=snake->head;
 
 	 while(current!=NULL){
 	 	SDL_RenderFillRect(renderer,current->rectangle);
 	 	current=current->next;
 	 }
+
+	 SDL_SetRenderDrawColor(renderer,0,0,0,255);//noir
 
 	 SDL_RenderPresent(renderer);
 }
@@ -167,8 +171,7 @@ SDL_bool EndGame(Snake *snake){    //Indique si le jeu est fini ou non
 	}
 	else{
 		SnakeCell *current=snake->head->next;
-		printf("%p\n",current);
-
+		
 		while(current!=NULL){
 			x_current=current->rectangle->x;
 			y_current=current->rectangle->y;
@@ -199,6 +202,8 @@ SDL_bool IsInsideSnake(int x1, int y1, Snake *snake){
 }
 
 void Pop_Bonus(Snake *snake, SDL_Renderer *renderer,int *x_bonus,int *y_bonus){
+
+	SDL_SetRenderDrawColor(renderer,255,255,255,255); //blanc
 	 *x_bonus=(rand()%(WIDTH/COTE-1))*COTE;
 	 *y_bonus=(rand()%(HEIGHT/COTE-1))*COTE;
 
@@ -220,6 +225,7 @@ void Pop_Bonus(Snake *snake, SDL_Renderer *renderer,int *x_bonus,int *y_bonus){
 	 bonus.w=COTE;
 	 bonus.h=COTE;
 	 SDL_RenderFillRect(renderer,&bonus);
+	 SDL_SetRenderDrawColor(renderer,0,0,0,255); //retourne en noir
 
 }
 
@@ -243,7 +249,7 @@ void MoveSnake30FPS(Snake *snake,SDL_Rect *rectangle, int dir,SDL_Renderer *rend
 	}
 	if (dir==EAST){
 		i=rectangle->x;
-		while(rectangle->x<i-COTE){
+		while(rectangle->x<i+COTE){
 			rectangle->x++;
 			current_time=SDL_GetTicks();
 			if (current_time-previous_time>30){
@@ -269,7 +275,7 @@ void MoveSnake30FPS(Snake *snake,SDL_Rect *rectangle, int dir,SDL_Renderer *rend
 	}
 	if (dir==SOUTH){
 		i=rectangle->y;
-		while(rectangle->y>i+COTE){
+		while(rectangle->y<i+COTE){
 			rectangle->y++;
 			current_time=SDL_GetTicks();
 			if (current_time-previous_time>30){
@@ -343,3 +349,10 @@ void MoveSnake30FPS(Snake *snake,SDL_Rect *rectangle, int dir,SDL_Renderer *rend
 //		}
 //	}
 //}*/
+
+void PrintSquare(SDL_Renderer *renderer,int x1, int y1){
+	SDL_SetRenderDrawColor(renderer,255,255,255,255); //blanc
+	SDL_Rect rect={x1,y1,COTE,COTE};
+	SDL_RenderFillRect(renderer,&rect);
+	SDL_SetRenderDrawColor(renderer,0,0,0,255); //blanc
+}
