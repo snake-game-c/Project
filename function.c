@@ -171,17 +171,27 @@ SDL_bool EndGame(Snake *snake){    //Indique si le jeu est fini ou non
 	}
 	else{
 		SnakeCell *current=snake->head->next;
+		int pos=0; /*numero de la position de current, avec 0 la premiere position*/		
 		
 		while(current!=NULL){
 			x_current=current->rectangle->x;
 			y_current=current->rectangle->y;
-			if ((x_head<=x_current+COTE && x_head>=x_current)&&(y_head<=y_current+COTE && y_head>=y_current)){
-				return SDL_TRUE;
+			/*Cas ou la longueur du serpent est superieur a 2 : la tete a un bord commun avec le suivant*/
+			if (pos<=1){
+				pos++;
+				current=current->next;
+			}else{
+				if ((x_head<=x_current+COTE && x_head>=x_current)&&(y_head<=y_current+COTE && y_head>=y_current)){
+					printf("test de la tete sur le serpent\n");
+					return SDL_TRUE;
+				}
+				pos++;
+				current=current->next;
 			}
-			current=current->next;
 		}
+		//return SDL_FALSE;
 	}
-	return SDL_FALSE;
+	return SDL_FALSE; 
 
 }
 
@@ -220,8 +230,8 @@ void Pop_Bonus(Snake *snake, SDL_Renderer *renderer,int *x_bonus,int *y_bonus){
 	 SDL_Rect bonus;
 	 bonus.x=*x_bonus;
 	 bonus.y=*y_bonus;
-	 printf("x after while%d\n",*x_bonus);
-	 printf("y after while%d\n",*y_bonus);
+	 //printf("x after while%d\n",*x_bonus);
+	 //printf("y after while%d\n",*y_bonus);
 	 bonus.w=COTE;
 	 bonus.h=COTE;
 	 SDL_RenderFillRect(renderer,&bonus);
@@ -311,15 +321,15 @@ void MoveSnake30FPS(Snake *snake,SDL_Rect *rectangle, int dir,SDL_Renderer *rend
 //						case SDLK_RIGHT: 
 //							/*Action a faire si la touche droite est pressee*/
 //							printf("RIGHT\n");
-///							SDL_RenderClear(renderer);
-	//						MoveSnake(snake,WEST,renderer);
+//							SDL_RenderClear(renderer);
+//							MoveSnake(snake,WEST,renderer);
 //							break;
 //
 //						case SDLK_UP:
 //							/*Action a faire si la touche haute est pressee*/ 
-///							printf("UP\n");
-	//						SDL_RenderClear(renderer);
-	//						MoveSnake(snake,NORTH,renderer);
+//							printf("UP\n");
+//							SDL_RenderClear(renderer);
+//							MoveSnake(snake,NORTH,renderer);
 //							break;
 //					
 //						case SDLK_DOWN: 

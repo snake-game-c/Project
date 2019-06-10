@@ -54,18 +54,18 @@ int main(int argc, char *argv[])
 	
 
 	/*Initialisation du Snake*/
-	Snake *snake=InitialiseSnake(100,100,EAST);
+	Snake *snake=InitialiseSnake(90,90,EAST); /*Initialisation avec un multiple de COTE*/
 	/*----------------------*/
 
 	/*Definition des variables de jeu*/
 	int x_bonus;
 	int y_bonus;
 
-	printf("1\n");
+	//printf("1\n");
 	Pop_Bonus(snake,rendu,&x_bonus,&y_bonus); 	//Fait apparaitre un bonus sur l'ecran
-	printf("2\n");
+	//printf("2\n");
 	PrintSnake(snake,rendu); //Affiche le snake
-	printf("3\n");
+	//printf("3\n");
 	/*----------------------*/
 
 	/*Gestion des evenements*/
@@ -92,6 +92,7 @@ int main(int argc, char *argv[])
 								SDL_RenderClear(rendu);
 								PrintSquare(rendu, x_bonus, y_bonus);
 								MoveSnake(snake,WEST,rendu);
+								//PrintSnakeConsole(snake);
 								break;
 
 							case SDLK_RIGHT: 
@@ -100,6 +101,7 @@ int main(int argc, char *argv[])
 								SDL_RenderClear(rendu);
 								PrintSquare(rendu, x_bonus, y_bonus);
 								MoveSnake(snake,EAST,rendu);
+								//PrintSnakeConsole(snake);
 								break;
 
 							case SDLK_UP:
@@ -108,6 +110,7 @@ int main(int argc, char *argv[])
 								SDL_RenderClear(rendu);
 								PrintSquare(rendu, x_bonus, y_bonus);
 								MoveSnake(snake,NORTH,rendu);
+								//PrintSnakeConsole(snake);
 								break;
 					
 							case SDLK_DOWN: 
@@ -116,6 +119,7 @@ int main(int argc, char *argv[])
 								SDL_RenderClear(rendu);
 								PrintSquare(rendu, x_bonus, y_bonus);
 								MoveSnake(snake,SOUTH,rendu);
+								//PrintSnakeConsole(snake);
 								break;
 
 							case SDLK_ESCAPE:
@@ -131,6 +135,7 @@ int main(int argc, char *argv[])
 						SDL_RenderClear(rendu);
 						PrintSquare(rendu,x_bonus,y_bonus);
 						MoveSnake(snake,snake->head->direction,rendu);
+						//PrintSnakeConsole(snake);
 						break;
 				
 				}
@@ -140,8 +145,12 @@ int main(int argc, char *argv[])
 			SDL_RenderClear(rendu);
 			Pop_Bonus(snake,rendu,&x_bonus,&y_bonus);
 			PrintSnake(snake,rendu);
+			//PrintSnakeConsole(snake);
 			}
 		
+		}else{
+			printf("EndGame=TRUE\n");
+			break;
 		}
 	}
 
