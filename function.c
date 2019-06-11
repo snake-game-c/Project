@@ -262,6 +262,27 @@ SDL_bool IsInsideSnake(int x1, int y1, Snake *snake){
 
 }
 
+SDL_bool AddBonus(int x1, int y1, Snake *snake){
+	/*Renvoie True si le snake prend le bonus*/
+	int x_head=snake->head->rectangle->x;
+	int y_head=snake->head->rectangle->y;
+	/*SOUTH NORTH puis EAST WEST*/
+	if (snake->head->direction==SOUTH && x_head==x1 && y_head+COTE==y1){
+		return SDL_TRUE;
+	}
+	if (snake->head->direction==NORTH && x_head==x1 && y_head-COTE==y1){
+		return SDL_TRUE;
+	}
+	if (snake->head->direction==EAST && y_head==y1 && x_head+COTE==x1){
+		return SDL_TRUE;
+	}
+	if (snake->head->direction==WEST && y_head==y1 && x_head+COTE==x1){
+		return SDL_TRUE;
+	}
+	return SDL_FALSE;
+}
+
+
 void Pop_Bonus(Snake *snake, SDL_Renderer *renderer,int *x_bonus,int *y_bonus){
 
 	SDL_SetRenderDrawColor(renderer,255,255,255,255); //blanc

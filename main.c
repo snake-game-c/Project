@@ -158,7 +158,7 @@ int main(int argc, char *argv[])
 			//PrintSnakeConsole(snake);
 			key_pressed=SDL_FALSE;
 			}
-		if (IsInsideSnake(x_bonus,y_bonus,snake)){
+		if (AddBonus(x_bonus,y_bonus,snake)){
 			AddRectangle(snake);
 			SDL_RenderClear(rendu);
 			Pop_Bonus(snake,rendu,&x_bonus,&y_bonus);
