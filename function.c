@@ -5,6 +5,56 @@
 
 #include "function.h"
 
+void MoveSnake(Snake *snake,int dir, SDL_Renderer *renderer)
+{	
+	SnakeCell *current=snake->head;
+	//mise a jour de la tete
+	if (dir==NORTH){
+		current->rectangle->y-=COTE;
+		current->direction=dir;
+	}
+	else if (dir==EAST){
+		current->rectangle->x+=COTE;
+		current->direction=dir;
+	}
+	else if (dir==WEST){
+		current->rectangle->x-=COTE;
+		current->direction=dir;
+	}
+	else if (dir==SOUTH){
+		current->rectangle->y+=COTE;
+		current->direction=dir;
+	}
+	SnakeCell *previous=current;
+	current=current->next;
+	int dirtempprev=previous->direction;
+	int dirtempnext;
+	// modification de la position du rectangle actuel selon sa direction
+	// et modification de sa direction par la direction du rectangle precedent
+	while (current!=NULL){
+			dirtempnext=current->direction;
+		if (current->direction==NORTH){
+			current->rectangle->y-=COTE;
+			current->direction=dirtempprev;
+		}
+		else if (current->direction==EAST){
+			current->rectangle->x+=COTE;
+			current->direction=dirtempprev;
+		}
+		else if (current->direction==WEST){
+			current->rectangle->x-=COTE;
+			current->direction=dirtempprev;
+		}
+		else if (current->direction==SOUTH){
+			current->rectangle->y+=COTE;
+			current->direction=dirtempprev;
+		}
+		dirtempprev=dirtempnext;
+		current=current->next;
+	}
+	PrintSnake(snake,renderer);
+}
+
 Snake *AddRectangle(Snake *snake)
 {
 	/*Initialisation de la nouvelle cellule*/
@@ -58,7 +108,7 @@ Snake *AddRectangle(Snake *snake)
 	return snake;
 }
 
-Snake *MoveSnake(Snake *snake,int dir,SDL_Renderer *renderer)
+Snake *MoveSnake2(Snake *snake,int dir,SDL_Renderer *renderer)
 {	
 	SnakeCell *current=snake->head;
 	//mise a jour de la tete
@@ -167,6 +217,8 @@ SDL_bool EndGame(Snake *snake){    //Indique si le jeu est fini ou non
 
 	/* Si le snake depasse les dimensions de la fenetre*/
 	if (x_head<0 || x_head>WIDTH ||y_head<0 || y_head>HEIGHT){
+		printf("x_head %d\n",x_head);
+		printf("y_head %d\n",y_head);
 		return SDL_TRUE;
 	}
 	else{
@@ -189,7 +241,6 @@ SDL_bool EndGame(Snake *snake){    //Indique si le jeu est fini ou non
 				current=current->next;
 			}
 		}
-		//return SDL_FALSE;
 	}
 	return SDL_FALSE; 
 
@@ -366,3 +417,5 @@ void PrintSquare(SDL_Renderer *renderer,int x1, int y1){
 	SDL_RenderFillRect(renderer,&rect);
 	SDL_SetRenderDrawColor(renderer,0,0,0,255); //blanc
 }
+
+

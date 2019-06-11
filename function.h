@@ -37,7 +37,8 @@ typedef struct Snake{
 
 Snake *AddRectangle(Snake *snake);
 void PrintSnake(Snake *snake, SDL_Renderer *renderer);
-Snake *MoveSnake(Snake *snake,int dir,SDL_Renderer *renderer);
+void MoveSnake(Snake *snake,int dir,SDL_Renderer *renderer);
+Snake *MoveSnake2(Snake *snake,int dir,SDL_Renderer *renderer);
 void PrintSnakeConsole(Snake *snake);
 Snake *InitialiseSnake(int x1, int y1, int dir);
 SDL_bool EndGame(Snake *snake);
@@ -45,6 +46,7 @@ SDL_bool IsInsideSnake(int x1, int y1, Snake *Snake);
 void Pop_Bonus(Snake *snake, SDL_Renderer *renderer,int *x_bonus,int *y_bonus);
 void MoveSnake30FPS(Snake *snake,SDL_Rect *rectangle, int dir, SDL_Renderer *renderer);
 void PrintSquare(SDL_Renderer *renderer,int x1, int y1);
+void MoveIfNoInput(Snake *snake,SDL_Renderer *renderer);
 /*----------------------------------------------------*/
 
 

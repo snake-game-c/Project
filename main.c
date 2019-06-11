@@ -72,10 +72,16 @@ int main(int argc, char *argv[])
 
 	SDL_bool program_launched=SDL_TRUE;
 
+	int current_time;
+	int previous_time=0;
+
 	while(program_launched){
 		SDL_Event event;
+		SDL_bool key_pressed=SDL_FALSE;
 
 		if(EndGame(snake)==SDL_FALSE){
+			current_time=SDL_GetTicks();
+
 			while(SDL_PollEvent(&event)){
 				switch(event.type){    //En fonction de l'evenement 
 
@@ -92,6 +98,7 @@ int main(int argc, char *argv[])
 								SDL_RenderClear(rendu);
 								PrintSquare(rendu, x_bonus, y_bonus);
 								MoveSnake(snake,WEST,rendu);
+								key_pressed=SDL_TRUE;
 								//PrintSnakeConsole(snake);
 								break;
 
@@ -101,6 +108,7 @@ int main(int argc, char *argv[])
 								SDL_RenderClear(rendu);
 								PrintSquare(rendu, x_bonus, y_bonus);
 								MoveSnake(snake,EAST,rendu);
+								key_pressed=SDL_TRUE;
 								//PrintSnakeConsole(snake);
 								break;
 
@@ -110,6 +118,7 @@ int main(int argc, char *argv[])
 								SDL_RenderClear(rendu);
 								PrintSquare(rendu, x_bonus, y_bonus);
 								MoveSnake(snake,NORTH,rendu);
+								key_pressed=SDL_TRUE;
 								//PrintSnakeConsole(snake);
 								break;
 					
@@ -119,6 +128,7 @@ int main(int argc, char *argv[])
 								SDL_RenderClear(rendu);
 								PrintSquare(rendu, x_bonus, y_bonus);
 								MoveSnake(snake,SOUTH,rendu);
+								key_pressed=SDL_TRUE;
 								//PrintSnakeConsole(snake);
 								break;
 
@@ -132,14 +142,22 @@ int main(int argc, char *argv[])
 						break;
 
 					default:
-						SDL_RenderClear(rendu);
-						PrintSquare(rendu,x_bonus,y_bonus);
-						MoveSnake(snake,snake->head->direction,rendu);
 						//PrintSnakeConsole(snake);
 						break;
 				
 				}
-		}
+			}
+			if (key_pressed!=SDL_TRUE){
+
+	 			if(current_time-previous_time>300){
+	 			previous_time=current_time;
+	 			SDL_RenderClear(rendu);
+				PrintSquare(rendu,x_bonus,y_bonus);
+	 			MoveSnake(snake, snake->head->direction,rendu);
+	 			}
+			//PrintSnakeConsole(snake);
+			key_pressed=SDL_FALSE;
+			}
 		if (IsInsideSnake(x_bonus,y_bonus,snake)){
 			AddRectangle(snake);
 			SDL_RenderClear(rendu);
