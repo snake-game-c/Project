@@ -47,6 +47,18 @@ void Pop_Bonus(Snake *snake, SDL_Renderer *renderer,int *x_bonus,int *y_bonus);
 void MoveSnake30FPS(Snake *snake,SDL_Rect *rectangle, int dir, SDL_Renderer *renderer);
 void PrintSquare(SDL_Renderer *renderer,int x1, int y1);
 void MoveIfNoInput(Snake *snake,SDL_Renderer *renderer);
+
+void one(SDL_Renderer *renderer,int x1,int y1);
+void two(SDL_Renderer *renderer,int x1,int y1);
+void three(SDL_Renderer *renderer,int x1,int y1);
+void four(SDL_Renderer *renderer,int x1,int y1);
+void five(SDL_Renderer *renderer,int x1,int y1);
+void six(SDL_Renderer *renderer,int x1,int y1);
+void seven(SDL_Renderer *renderer,int x1,int y1);
+void eight(SDL_Renderer *renderer,int x1,int y1);
+void nine(SDL_Renderer *renderer,int x1,int y1);
+void zero(SDL_Renderer *renderer,int x1,int y1);
+void PrintScore(Snake *snake, SDL_Renderer *renderer, int x1, int y1);
 /*----------------------------------------------------*/
 
 

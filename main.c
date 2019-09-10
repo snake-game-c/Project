@@ -172,6 +172,12 @@ int main(int argc, char *argv[])
 		}
 	}
 
+	printf("%d\n",snake->length);
+
+	SDL_RenderClear(rendu);
+	PrintScore(snake,rendu,100,100);
+	SDL_Delay(5000);
+
 
 	/*----------------------*/
 

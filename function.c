@@ -418,4 +418,217 @@ void PrintSquare(SDL_Renderer *renderer,int x1, int y1){
 	SDL_SetRenderDrawColor(renderer,0,0,0,255); //blanc
 }
 
+/*-------------------------------------Fonctions d'affichage-------------------------------------*/
 
+void one(SDL_Renderer *renderer,int x1, int y1){  //affiche le nombre 1 (x1 et y1 sont les coordonnees du carre en haut a gauche du chiffre)
+	PrintSquare(renderer,x1,y1);
+	PrintSquare(renderer,x1,y1+COTE);
+	PrintSquare(renderer,x1,y1+2*COTE);
+	PrintSquare(renderer,x1,y1+3*COTE);
+	PrintSquare(renderer,x1,y1+4*COTE);
+	SDL_RenderPresent(renderer);
+}
+
+void two(SDL_Renderer *renderer,int x1, int y1){
+	PrintSquare(renderer,x1,y1);
+	PrintSquare(renderer,x1+COTE,y1);
+	PrintSquare(renderer,x1+2*COTE,y1);
+	PrintSquare(renderer,x1+2*COTE,y1+COTE);
+	PrintSquare(renderer,x1+2*COTE,y1+2*COTE);
+	PrintSquare(renderer,x1+COTE,y1+2*COTE);
+	PrintSquare(renderer,x1,y1+2*COTE);
+	PrintSquare(renderer,x1,y1+3*COTE);
+	PrintSquare(renderer,x1,y1+4*COTE);
+	PrintSquare(renderer,x1+COTE,y1+4*COTE);
+	PrintSquare(renderer,x1+2*COTE,y1+4*COTE);
+	SDL_RenderPresent(renderer);
+}
+
+void three(SDL_Renderer *renderer,int x1, int y1){
+	PrintSquare(renderer,x1,y1);
+	PrintSquare(renderer,x1+COTE,y1);
+	PrintSquare(renderer,x1+2*COTE,y1);
+	PrintSquare(renderer,x1+2*COTE,y1+COTE);
+	PrintSquare(renderer,x1+2*COTE,y1+2*COTE);
+	PrintSquare(renderer,x1+COTE,y1+2*COTE);
+	PrintSquare(renderer,x1,y1+2*COTE);
+	PrintSquare(renderer,x1+2*COTE,y1+3*COTE);
+	PrintSquare(renderer,x1,y1+4*COTE);
+	PrintSquare(renderer,x1+COTE,y1+4*COTE);
+	PrintSquare(renderer,x1+2*COTE,y1+4*COTE);
+	SDL_RenderPresent(renderer);
+}
+
+void four(SDL_Renderer *renderer,int x1, int y1){
+	PrintSquare(renderer,x1,y1);
+	PrintSquare(renderer,x1+2*COTE,y1);
+	PrintSquare(renderer,x1,y1+COTE);
+	PrintSquare(renderer,x1+2*COTE,y1+COTE);
+	PrintSquare(renderer,x1+2*COTE,y1+2*COTE);
+	PrintSquare(renderer,x1+COTE,y1+2*COTE);
+	PrintSquare(renderer,x1,y1+2*COTE);
+	PrintSquare(renderer,x1+2*COTE,y1+3*COTE);
+	PrintSquare(renderer,x1+2*COTE,y1+4*COTE);
+	SDL_RenderPresent(renderer);
+}
+
+void five(SDL_Renderer *renderer,int x1,int y1){
+	PrintSquare(renderer,x1,y1);
+	PrintSquare(renderer,x1+COTE,y1);
+	PrintSquare(renderer,x1+2*COTE,y1);
+	PrintSquare(renderer,x1,y1+COTE);
+	PrintSquare(renderer,x1+2*COTE,y1+2*COTE);
+	PrintSquare(renderer,x1+COTE,y1+2*COTE);
+	PrintSquare(renderer,x1,y1+2*COTE);
+	PrintSquare(renderer,x1+2*COTE,y1+3*COTE);
+	PrintSquare(renderer,x1,y1+4*COTE);
+	PrintSquare(renderer,x1+COTE,y1+4*COTE);
+	PrintSquare(renderer,x1+2*COTE,y1+4*COTE);
+	SDL_RenderPresent(renderer);
+}
+
+void six(SDL_Renderer *renderer,int x1,int y1){
+	five(renderer,x1,y1);
+	PrintSquare(renderer,x1,y1+3*COTE);
+	SDL_RenderPresent(renderer);
+}
+
+void seven(SDL_Renderer *renderer,int x1,int y1){
+	PrintSquare(renderer,x1,y1);
+	PrintSquare(renderer,x1+COTE,y1);
+	one(renderer,x1+2*COTE,y1);
+	SDL_RenderPresent(renderer);
+}
+
+void eight(SDL_Renderer *renderer,int x1,int y1){
+	two(renderer,x1,y1);
+	PrintSquare(renderer,x1,y1+COTE);
+	PrintSquare(renderer,x1+2*COTE,y1+3*COTE);
+	SDL_RenderPresent(renderer);
+}
+
+void nine(SDL_Renderer *renderer,int x1,int y1){
+	three(renderer,x1,y1);
+	PrintSquare(renderer,x1,y1+COTE);
+	SDL_RenderPresent(renderer);
+}
+
+void zero(SDL_Renderer *renderer,int x1,int y1){
+	one(renderer,x1,y1);
+	one(renderer,x1+2*COTE,y1);
+	PrintSquare(renderer,x1+COTE,y1);
+	PrintSquare(renderer,x1+COTE,y1+4*COTE);
+	SDL_RenderPresent(renderer);
+}
+
+void PrintScore(Snake *snake, SDL_Renderer *rendu, int x1, int y1){
+	int score=snake->length;
+	int unite=score%10;
+	int dizaine=score/10;
+	int centaine=score/100;
+
+	switch(centaine){
+		case 0:
+			break;
+		case 1:
+			one(rendu,x1,y1);
+			break;
+		case 2:
+			two(rendu,x1,y1);
+			break;
+		case 3:
+			three(rendu,x1,y1);
+			break;
+		case 4:
+			four(rendu,x1,y1);
+			break;
+		case 5:
+			five(rendu,x1,y1);
+			break;
+		case 6:
+			six(rendu,x1,y1);
+			break;
+		case 7:
+			seven(rendu,x1,y1);
+			break;
+		case 8:
+			eight(rendu,x1,y1);
+			break;
+		case 9:
+			nine(rendu,x1,y1);
+			break;
+		default:
+			break;
+	}
+
+	switch(dizaine){
+		case 0:
+			zero(rendu,x1+4*COTE,y1);
+			break;
+		case 1:
+			one(rendu,x1+4*COTE,y1);
+			break;
+		case 2:
+			two(rendu,x1+4*COTE,y1);
+			break;
+		case 3:
+			three(rendu,x1+4*COTE,y1);
+			break;
+		case 4:
+			four(rendu,x1+4*COTE,y1);
+			break;
+		case 5:
+			five(rendu,x1+4*COTE,y1);;
+			break;
+		case 6:
+			six(rendu,x1+4*COTE,y1);
+			break;
+		case 7:
+			seven(rendu,x1+4*COTE,y1);
+			break;
+		case 8:
+			eight(rendu,x1+4*COTE,y1);
+			break;
+		case 9:
+			nine(rendu,x1+4*COTE,y1);
+			break;
+		default:
+			break;
+	}
+
+	switch(unite){
+		case 0:
+			zero(rendu,x1+8*COTE,y1);
+			break;
+		case 1:
+			one(rendu,x1+8*COTE,y1);
+			break;
+		case 2:
+			two(rendu,x1+8*COTE,y1);
+			break;
+		case 3:
+			three(rendu,x1+8*COTE,y1);
+			break;
+		case 4:
+			four(rendu,x1+8*COTE,y1);
+			break;
+		case 5:
+			five(rendu,x1+8*COTE,y1);;
+			break;
+		case 6:
+			six(rendu,x1+8*COTE,y1);
+			break;
+		case 7:
+			seven(rendu,x1+8*COTE,y1);
+			break;
+		case 8:
+			eight(rendu,x1+8*COTE,y1);
+			break;
+		case 9:
+			nine(rendu,x1+8*COTE,y1);
+			break;
+		default:
+			break;
+	}
+
+}
